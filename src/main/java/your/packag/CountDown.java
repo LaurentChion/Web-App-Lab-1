@@ -1,52 +1,87 @@
 package your.packag;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.io.PrintWriter;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
-public class CountDown extends HttpServlet {
+public class CountDown {
+  private String title;
+  private String locale;
+  private String time;
 
-	/*@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		resp.setContentType("text/html");
-		resp.setCharacterEncoding("UTF-8");
-		PrintWriter out = resp.getWriter();
-		out.println("<!DOCTYPE html>");
-		out.println("<html>");
-		out.println("<head>");
-		out.println("<meta charset=\"utf-8\" />");
-		out.println("<title>CountDown</title>");
-		out.println("</head>");
-		out.println("<body>");
-		out.println("<p>"+diff()+"</p>");
-		out.println("</body>");
-		out.println("</html>");
 
-	}*/
-	@Override
-	public void doGet( HttpServletRequest request, HttpServletResponse response )
-		throws ServletException, IOException {
-			request.setAttribute( "diff", diff() );
-			this.getServletContext().getRequestDispatcher( "/WEB-INF/CountDownView.jsp" ).forward( request, response );
-			this.getServletContext()
-			.getRequestDispatcher( "/WEB-INF/CountDownView.jsp" )
-			.forward( request, response );
+	/**
+  * TODO: Implement default constructor
+	* Default empty CountDown constructor
+	*/
+	public CountDown() {
+    this.time = "02/11/2016 17:30:00";
 	}
 
-	private String diff(){
-		String theDate = "02/11/2016 17:30:00";
-		String pattern = "dd/MM/yyyy HH:mm:ss";
+	/**
+	* Default CountDown constructor
+	*/
+	public CountDown(String title, String locale, String time) {
+		this.title = title;
+		this.locale = locale;
+		this.time = time;
+	}
+
+	/**
+	* Returns value of title
+	* @return
+	*/
+	public String getTitle() {
+		return title;
+	}
+
+	/**
+	* Sets new value of title
+	* @param
+	*/
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	/**
+	* Returns value of locale
+	* @return
+	*/
+	public String getLocale() {
+		return locale;
+	}
+
+	/**
+	* Sets new value of locale
+	* @param
+	*/
+	public void setLocale(String locale) {
+		this.locale = locale;
+	}
+
+	/**
+	* Returns value of time
+	* @return
+	*/
+	public String getTime() {
+		return time;
+	}
+
+	/**
+	* Sets new value of time
+	* @param
+	*/
+	public void setTime(String time) {
+		this.time = time;
+	}
+
+  private String diff(){
+    String pattern = "dd/MM/yyyy HH:mm:ss";
 		Date d2 = null;
 		try {
-			d2 = new SimpleDateFormat(pattern).parse(theDate);
+			d2 = new SimpleDateFormat(pattern).parse(getTime());
 		} catch (ParseException e) {
 			return "server error...";
 		}
@@ -59,6 +94,10 @@ public class CountDown extends HttpServlet {
 		long diffHours = diff / (60 * 60 * 1000) % 24;
 		long diffDays = diff / (24 * 60 * 60 * 1000);
 		return diffDays+" jour(s) "+diffHours+" heure(s) "+diffMinutes+" minute(s) "+diffSeconds+" seconde(s)";
-
 	}
+
+  public String toString() {
+    return diff();
+  }
+
 }
