@@ -11,12 +11,4 @@
  		<servlet-name>CountDown</servlet-name>
  		<url-pattern>/countdown</url-pattern>
  	</servlet-mapping>
-  <servlet>
-    <servlet-name>Index</servlet-name>
-    <servlet-class>your.packag.IndexController</servlet-class>
-  </servlet>
-  <servlet-mapping>
- 		<servlet-name>Index</servlet-name>
- 		<url-pattern>/index</url-pattern>
- 	</servlet-mapping>
  </web-app>
