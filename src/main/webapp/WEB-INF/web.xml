@@ -3,12 +3,31 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
  <web-app>
+ <servlet>
+		<servlet-name>IndexWebSocket</servlet-name>
+		<servlet-class>controller.IndexWebSocket</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>IndexWebSocket</servlet-name>
+		<url-pattern>/indexWebSocket</url-pattern>
+	</servlet-mapping>
+
  	<servlet>
  		<servlet-name>CountDown</servlet-name>
- 		<servlet-class>your.packag.CountDownController</servlet-class>
+ 		<servlet-class>controller.CountDownController</servlet-class>
  	</servlet>
  	<servlet-mapping>
  		<servlet-name>CountDown</servlet-name>
- 		<url-pattern>/countdown</url-pattern>
+ 		<url-pattern>/add</url-pattern>
  	</servlet-mapping>
+
+  <servlet>
+    <servlet-name>DeleteCountDown</servlet-name>
+    <servlet-class>controller.DeleteCountDownController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteCountDown</servlet-name>
+    <url-pattern>/delete</url-pattern>
+  </servlet-mapping>
+
  </web-app>

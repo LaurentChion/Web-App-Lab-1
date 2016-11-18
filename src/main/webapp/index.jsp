@@ -2,42 +2,61 @@
 
 <jsp:include page="includes/header.jsp"/>
 
+<%@ page import="javax.servlet.http.Cookie" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.TreeSet" %>
+<%@ page import="model.CountDown" %>
+<%@ page import="java.time.ZoneId" %>
+
+
 <div class="medium-8 columns">
-  <%@ page import="javax.servlet.http.Cookie" %>
-  <%@ page import="your.packag.CountDown" %>
+
   <%
   Cookie[] cookies = request.getCookies();
+  ArrayList<Cookie> cookiesValide = new ArrayList<Cookie>();
 
   if (cookies != null) {
-
-  for (int i=0; i< cookies.length ; i++) {
-    if ( !cookies[i].getName().equals("JSESSIONID") ) {
-      %>
-      <div class="row success callout">
-        <div class="large-4 medium-4 columns">
-          <%
-            CountDown c = new CountDown(cookies[i].getValue());
-            out.println(c.getTitle());
-          %>
-        </div>
-        <div class="large-6 medium-6 columns">
-        <%
-          out.println(c.diff());
-        %>
-        </div>
-        <div class="large-2 medium-2 columns">
-          <!-- TODO: Implémenter Edition et Suppression -->
-            <button type="submit" class="button"><i class="fi-pencil"></i></button>
-            <form  action="delete" method="post">
-              <input type="text" name="id" value="<% out.print(cookies[i].getName()) ;%>">
-              <button type="submit" class="alert button"><i class="fi-x"></i></button>
-            </form>
+    for (int i=0; i< cookies.length ; i++) {
+      if ( !((cookies[i].getName().equals("JSESSIONID")) || (cookies[i].getValue().equals("") )) ) {
+        cookiesValide.add(cookies[i]);
+      }
+    }
+    if (cookiesValide.size() == 0) {%>
+      <div class="row callout">
+        <div class="small-12 columns">
+          No CountDown available
         </div>
       </div>
-    <%  }
+    <%}
+    else {
+      for (Cookie c : cookiesValide) {
+        %>
+        <div class="row callout">
+          <div class="large-4 medium-4 columns">
+            <%
+              CountDown compteur = new CountDown(c.getValue());
+              out.println(compteur.getTitle());
+            %>
+          </div>
+          <div class="large-6 medium-6 columns">
+            <div id="<% out.print(c.getName()); %>">
+
+            </div>
+          </div>
+          <div class="large-2 medium-2 columns">
+            <!-- TODO: Implémenter Edition et Suppression -->
+              <button type="submit" class="button"><i class="fi-pencil"></i></button>
+              <form  action="delete" method="post">
+                <input type="hidden" name="id" value="<% out.print(c.getName()) ;%>">
+                <button type="submit" class="alert button"><i class="fi-x"></i></button>
+              </form>
+          </div>
+        </div> <%
+      }
+    }
   }
-  } else {%>
-    <div class="row success callout">
+  else {%>
+    <div class="row callout">
       <div class="small-12 columns">
         No CountDown available
       </div>
@@ -47,7 +66,7 @@
 
 
 <div class="medium-4 columns">
-  <ul class="menu vertical secondary callout">
+  <ul class="menu vertical callout">
     <li class="title">Add a new CountDown !</li>
       <form method="POST" action="add">
         <li>
@@ -83,8 +102,13 @@
             </div>
             <div class="small-9 columns">
               <select name="locale" placeholder="Select a locale">
-                <option value="en">English</option>
-                <option value="fr">Français</option>
+                <%
+                TreeSet<String> sortedZones = new TreeSet<>(ZoneId.getAvailableZoneIds());
+
+                for (String zone : sortedZones) { %>
+                  <option value="<%out.print(zone);%>"><%out.print(zone);%></option>
+                <%
+                } %>
               </select>
             </div>
           </div>
@@ -106,10 +130,58 @@ $(function(){
   $('#dpt').fdatepicker({
     format: 'dd/mm/yyyy hh:ii:ss',
     disableDblClickSelection: true,
-    language: 'en',
+    language: 'us',
     pickTime: true
   });
 });
+</script>
+
+<script type="text/javascript">
+    var webSocket = new WebSocket(
+            'ws://localhost:8081/CountDownWebApp/indexWebSocket');
+
+    webSocket.onerror = function(event) {
+        onError(event)
+    };
+
+    webSocket.onopen = function(event) {
+        onOpen(event)
+    };
+
+    webSocket.onmessage = function(event) {
+        onMessage(event)
+    };
+
+    function onMessage(event) {
+        var tab = JSON.parse(event.data);
+        console.log(tab);
+        <% for(Cookie c : cookiesValide) {%>
+          document.getElementById('<%out.print(c.getName());%>').innerHTML = tab['<%out.print(c.getName());%>'];
+
+        <% } %>
+    }
+
+    function onOpen(event) {
+      start();
+    }
+
+    function onError(event) {
+        alert(event.data);
+    }
+
+    function start() {
+        var str = '<%
+          for (int i=0; i<cookiesValide.size() - 1; i++) {
+            out.print(cookiesValide.get(i).getName()+"@"+cookiesValide.get(i).getValue()+";");
+          }
+          if (cookiesValide.size() != 0) {
+            out.print(cookiesValide.get(cookiesValide.size()-1).getName()+"@"+cookiesValide.get(cookiesValide.size()-1).getValue());
+          }
+         %>';
+        console.log(str);
+        webSocket.send(str);
+        return false;
+    }
 </script>
 
 <jsp:include page="includes/footer.jsp"/>
