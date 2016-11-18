@@ -36,7 +36,6 @@ public class IndexWebSocket extends HttpServlet {
 
     // Sending message to client each 1 second
     while(true) {
-        //session.getBasicRemote().sendText(value);
         session.getBasicRemote().sendText(toJSON(ids, countdowns, length));
         Thread.sleep(1000);
     }
