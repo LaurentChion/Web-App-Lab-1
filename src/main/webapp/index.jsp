@@ -14,6 +14,7 @@
   <%
   Cookie[] cookies = request.getCookies();
   ArrayList<Cookie> cookiesValide = new ArrayList<Cookie>();
+  TreeSet<String> sortedZones = new TreeSet<>(ZoneId.getAvailableZoneIds());
 
   if (cookies != null) {
     for (int i=0; i< cookies.length ; i++) {
@@ -30,6 +31,7 @@
     <%}
     else {
       for (Cookie c : cookiesValide) {
+        CountDown countdown = new CountDown(c.getValue());
         %>
         <div class="row callout">
           <div class="large-4 medium-4 columns">
@@ -44,12 +46,75 @@
             </div>
           </div>
           <div class="large-2 medium-2 columns">
-            <!-- TODO: Implémenter Edition et Suppression -->
-              <button type="submit" class="button"><i class="fi-pencil"></i></button>
-              <form  action="delete" method="post">
-                <input type="hidden" name="id" value="<% out.print(c.getName()) ;%>">
-                <button type="submit" class="alert button"><i class="fi-x"></i></button>
-              </form>
+            <ul class="menu">
+
+            <li><button class="button" data-open="modal<%c.getName();%>"><i class="fi-pencil"></i></button></li>
+
+            <li><form  action="delete" method="post">
+              <input type="hidden" name="id" value="<% out.print(c.getName()) ;%>">
+              <button type="submit" class="alert button"><i class="fi-x"></i></button>
+            </form></li>
+          </ul>
+
+            <!--Menu edition -->
+            <div class="reveal" id="modal<%c.getName();%>" data-reveal>
+                  <ul class="menu vertical">
+                    <li class="title">Edit a CountDown !</li>
+                      <form method="POST" action="edit">
+                        <input type="hidden" name="id" value="<% out.print(c.getName()) ;%>">
+                        <li>
+                          <div class="row">
+                            <div class="small-3 columns">
+                              <label for="middle-label" class="middle">Title</label>
+                            </div>
+                            <div class="small-9 columns">
+                              <input type="text" name="title" placeholder="<%out.print(countdown.getTitle());%>">
+                            </div>
+                          </div>
+                        </li>
+
+                        <li>
+                          <div class="row">
+                            <div class="small-3 columns">
+                              <label for="middle-label" class="middle">Date</label>
+                            </div>
+
+                            <div class="small-9 columns">
+                              <div class="input-group">
+                                <span class="input-group-label"><i class="fi-calendar"></i></span>
+                                <input class="input-group-field" name="time" type="text" placeholder="<%out.print(countdown.getTime());%>" id="dpt2">
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+
+                        <li>
+                          <div class="row">
+                            <div class="small-3 columns">
+                              <label for="middle-label" class="middle">Locale</label>
+                            </div>
+                            <div class="small-9 columns">
+                              <select name="locale" placeholder="<%out.print(countdown.getLocale());%>">
+                                <%
+                                for (String zone : sortedZones) { %>
+                                  <option value="<%out.print(zone);%>"><%out.print(zone);%></option>
+                                <%
+                                } %>
+                              </select>
+                            </div>
+                          </div>
+                        </li>
+
+                        <li>
+                          <button type="submit" class="expanded success button">Create</button>
+                        </li>
+                    </form>
+                  </ul>
+                <!--Fin Menu edition -->
+              <button class="close-button" data-close aria-label="Close modal" type="button">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           </div>
         </div> <%
       }
@@ -89,7 +154,7 @@
             <div class="small-9 columns">
               <div class="input-group">
                 <span class="input-group-label"><i class="fi-calendar"></i></span>
-                <input class="input-group-field" name="time" type="text" value="Select a date" id="dpt">
+                <input class="input-group-field" name="time" type="text" placeholder="Select a date" id="dpt">
               </div>
             </div>
           </div>
@@ -103,8 +168,6 @@
             <div class="small-9 columns">
               <select name="locale" placeholder="Select a locale">
                 <%
-                TreeSet<String> sortedZones = new TreeSet<>(ZoneId.getAvailableZoneIds());
-
                 for (String zone : sortedZones) { %>
                   <option value="<%out.print(zone);%>"><%out.print(zone);%></option>
                 <%
@@ -130,7 +193,18 @@ $(function(){
   $('#dpt').fdatepicker({
     format: 'dd/mm/yyyy hh:ii:ss',
     disableDblClickSelection: true,
-    language: 'us',
+    language: 'en',
+    pickTime: true
+  });
+});
+</script>
+
+<script>
+$(function(){
+  $('#dpt2').fdatepicker({
+    format: 'dd/mm/yyyy hh:ii:ss',
+    disableDblClickSelection: true,
+    language: 'en',
     pickTime: true
   });
 });
@@ -154,7 +228,7 @@ $(function(){
 
     function onMessage(event) {
         var tab = JSON.parse(event.data);
-        console.log(tab);
+
         <% for(Cookie c : cookiesValide) {%>
           document.getElementById('<%out.print(c.getName());%>').innerHTML = tab['<%out.print(c.getName());%>'];
 

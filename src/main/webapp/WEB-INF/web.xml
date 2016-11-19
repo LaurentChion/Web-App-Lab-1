@@ -30,4 +30,13 @@
     <url-pattern>/delete</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>EditCountDown</servlet-name>
+    <servlet-class>controller.EditCountDownController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EditCountDown</servlet-name>
+    <url-pattern>/edit</url-pattern>
+  </servlet-mapping>
+
  </web-app>
