@@ -5,27 +5,17 @@ body {
 
 .callout {
   color: #EEEEEE;
-  transition: color 1s;
   background-color: #2F4E6F;
-  transition: background-color 1s;
-}
-.callout:hover {
-  background: #C8D7E3;
-  color: #0a0a0a;
 }
 
 .callout label {
   color: #EEEEEE;
-  transition: color 1s;
-}
-.callout:hover label{
-  color: #0a0a0a;
 }
 
 .reveal {
-  color: #0a0a0a;
-  background-color: #C8D7E3;
+  color: #EEEEEE;
+  background-color: #2F4E6F;
 }
 .reveal label {
-  color: #0a0a0a;
+  color: #EEEEEE;
 }
