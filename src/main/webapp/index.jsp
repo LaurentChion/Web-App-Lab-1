@@ -48,11 +48,11 @@
           <div class="large-2 medium-2 columns">
             <ul class="menu">
 
-            <li><button class="button" data-open="modal<%c.getName();%>"><i class="fi-pencil"></i></button></li>
+            <li><button class="button" data-open="modal<%c.getName();%>" aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="Edit"><i class="fi-pencil"></i></button></li>
 
             <li><form  action="delete" method="post">
               <input type="hidden" name="id" value="<% out.print(c.getName()) ;%>">
-              <button type="submit" class="alert button"><i class="fi-x"></i></button>
+              <button type="submit" class="alert button" aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="Delete"><i class="fi-x"></i></button>
             </form></li>
           </ul>
 
