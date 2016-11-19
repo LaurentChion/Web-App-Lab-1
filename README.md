@@ -1,7 +1,26 @@
 # Web-App-Lab-1
 ## Author : Laurent Chion
 
-# Done / Undone
+### Install
+  - Clone the project :
+    ````
+      git clone https://github.com/LaurentChion/Web-App-Lab-1.git
+    ````
+  - move in :
+    ````
+      cd Web-App-Lab-1
+    ````
+  - install dependencies :
+    ````
+      mvn install
+    ````
+  - deploy app :
+    ````
+      mvn tomcat7:redeploy
+    ````
+  - go to http://localhost:8081/CountDownWebApp/
+
+### Done / Undone
 
 - [x] Using Git, Maven, JEE
 - [x] Countdowns are stored into Cookies
