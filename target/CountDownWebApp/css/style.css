@@ -1,0 +1,31 @@
+body {
+  color: #EEEEEE;
+  background: #333333;
+}
+
+.callout {
+  color: #EEEEEE;
+  transition: color 1s;
+  background-color: #2F4E6F;
+  transition: background-color 1s;
+}
+.callout:hover {
+  background: #C8D7E3;
+  color: #0a0a0a;
+}
+
+.callout label {
+  color: #EEEEEE;
+  transition: color 1s;
+}
+.callout:hover label{
+  color: #0a0a0a;
+}
+
+.reveal {
+  color: #0a0a0a;
+  background-color: #C8D7E3;
+}
+.reveal label {
+  color: #0a0a0a;
+}
