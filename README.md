@@ -8,15 +8,15 @@
     ````
   - move in :
     ````
-      cd Web-App-Lab-1
+    cd Web-App-Lab-1
     ````
   - install dependencies :
     ````
-      mvn install
+    mvn install
     ````
   - deploy app :
     ````
-      mvn tomcat7:redeploy
+    mvn tomcat7:redeploy
     ````
   - go to http://localhost:8081/CountDownWebApp/
 
