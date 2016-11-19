@@ -1,0 +1,21 @@
+body {
+  color: #EEEEEE;
+  background: #333333;
+}
+
+.callout {
+  color: #EEEEEE;
+  background-color: #2F4E6F;
+}
+
+.callout label {
+  color: #EEEEEE;
+}
+
+.reveal {
+  color: #EEEEEE;
+  background-color: #2F4E6F;
+}
+.reveal label {
+  color: #EEEEEE;
+}
