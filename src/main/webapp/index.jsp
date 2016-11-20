@@ -212,7 +212,7 @@ $(function(){
 
 <script type="text/javascript">
     var webSocket = new WebSocket(
-            'ws://localhost:<%out.print(request.getServerPort());%>/CountDownWebApp/indexWebSocket');
+            'ws://<%out.print(request.getServerName());%>:<%out.print(request.getServerPort());%>/CountDownWebApp/indexWebSocket');
 
     webSocket.onerror = function(event) {
         onError(event)
